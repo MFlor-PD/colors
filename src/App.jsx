@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <h1>Color Challengue</h1>
-      <p>"Think of a color, write it, and see if it matches a box."</p>
+      <p>"Write the color here"</p>
       <MyFormChallenge />
     </div>
   )
