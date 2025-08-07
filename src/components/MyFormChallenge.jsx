@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import BoxColor from "./BoxColor";
 
-const allColors = ['red', 'green', 'pink', 'yellow', 'purple', 'white', 'blue', 'aqua', 'olive', 'orange', 'brown', 'cyan', 'magenta', 'lime', 'maroon', 'navy', 'teal', 'silver', 'gold'];
+const allColors = ['red', 'green', 'pink', 'yellow', 'purple', 'white', 'blue', 'cyan', 'olive', 'orange', 'brown', 'beige', 'magenta', 'lime', 'maroon', 'teal', 'grey', 'silver', 'gold'];
 
 function getRandomCombination(allColors, size = 9) {
   const copy = [...allColors];
