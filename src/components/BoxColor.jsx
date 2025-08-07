@@ -1,31 +1,32 @@
-import { useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-const BoxColor = ({ color, inputValue }) => {
-  const boxRef = useRef(null);
+const BoxColor = ({ color, inputValue, reset, showHelp }) => {
+  const [active, setActive] = useState(false);
   const trimmedInput = inputValue.trim().toLowerCase();
   const match = trimmedInput === color.toLowerCase();
 
   useEffect(() => {
-    if (!boxRef.current) return;
-
-    if (match) {
-      boxRef.current.style.backgroundColor = color;
-      boxRef.current.style.color = "white";
-    } else {
-      boxRef.current.style.backgroundColor = "#f0f0f0";
-      boxRef.current.style.color = "black";
+    if (reset) {
+      setActive(false);
+    } else if (match) {
+      setActive(true);
     }
-  }, [match, color]);
+  }, [match, reset]);
+
+  const shouldFlip = active || showHelp;
 
   return (
-    <div ref={boxRef} className="box">
-      <p>{inputValue}</p>
-      <p>{match ? `¡Soy ${color}!` : "No soy el color"}</p>
+    <div className="box">
+       <div className={`inner-box ${shouldFlip ? "flipped" : ""}`}>
+        <div className="front">
+          <p className="guess-text">Guess my color</p>
+        </div>
+        <div className="back" style={{ backgroundColor: color }}>
+          <p style={{ color }}>{color}</p>
+          <p style={{ fontWeight: "lighter" }}>Yes! I am the {color} color!</p>
+        </div>
+      </div>
     </div>
   );
 };
-
 export default BoxColor;
-
-
-
