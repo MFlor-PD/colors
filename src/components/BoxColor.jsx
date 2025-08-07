@@ -23,23 +23,50 @@ const BoxColor = ({ color, active, reset, showHelp }) => {
 
     backColorTextRef.current.style.color = color;
     backColorTextRef.current.style.webkitTextStroke = "1px black";
-    backColorTextRef.current.style.fontWeight = "lighter";
+    backColorTextRef.current.style.fontWeight = "600";
 
   }, [active, showHelp, color]);
 
   return (
-    <div className="box" ref={boxRef}>
-      <div ref={innerBoxRef} className="inner-box">
-        <div className="front">
-          <p className="guess-text" ref={frontTextRef}>Guess my color</p>
-        </div>
-        <div className="back" style={{ backgroundColor: color }}>
-          <p ref={backColorTextRef}>{color}</p>
-          <p style={{ fontWeight: "lighter" }}>Yes! I am the {color} color!</p>
-        </div>
+  <div className="box" ref={boxRef}>
+
+    <div ref={innerBoxRef} className="inner-box">
+      <div className="front">
+        <p className="guess-text" ref={frontTextRef}>Guess my color</p>
       </div>
+
+      <div className="back" style={{ backgroundColor: color }}>
+        <p ref={backColorTextRef} 
+           style={{ 
+               color, 
+               WebkitTextStroke: "1px black", 
+               fontWeight: "600" }}> 
+               
+               {color}
+
+        </p>
+
+        <p style={{ fontWeight: "lighter", color: "black" }}>
+          Yes! I am the{" "}
+
+          <span 
+            style={{ 
+                color, 
+                WebkitTextStroke: "1px black", 
+                fontWeight: "600" }}>
+
+            {color}
+
+          </span>{" "}
+
+          color!
+        </p>
+      </div>
+
     </div>
-  );
+
+  </div>
+);
 };
 
 
