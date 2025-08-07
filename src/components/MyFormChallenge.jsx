@@ -60,7 +60,7 @@ const MyFormChallenge = () => {
       <div className="input-group">
         <input
           type="text"
-          placeholder="Think a color, write it and see if it has an assigned box"
+          placeholder="Write a color"
           value={inputValue}
           onChange={handleChange}
           disabled={gameFinished}
