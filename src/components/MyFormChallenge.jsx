@@ -28,7 +28,7 @@ const MyFormChallenge = () => {
       <div className="input-group">
         <input
           type="text"
-          placeholder="Escribe un color"
+          placeholder="Write a color"
           value={inputValue}
           onChange={handleChange}
         />
