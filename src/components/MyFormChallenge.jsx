@@ -1,26 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BoxColor from "./BoxColor";
 
-const colors = ['red', 'green', 'pink', 'yellow', 'purple', 'white', 'blue', 'aqua', 'olive'];
+const allColors = ['red', 'green', 'pink', 'yellow', 'purple', 'white', 'blue', 'aqua', 'olive', 'orange', 'brown', 'cyan', 'magenta', 'lime', 'maroon', 'navy', 'teal', 'silver', 'gold'];
+
+function getRandomCombination(allColors, size = 9) {
+  const copy = [...allColors];
+  const combination = [];
+  for (let i = 0; i < size; i++) {
+    const randomIndex = Math.floor(Math.random() * copy.length);
+    combination.push(copy.splice(randomIndex, 1)[0]);
+  }
+  return combination;
+}
 
 const MyFormChallenge = () => {
   const [inputValue, setInputValue] = useState('');
-  const [resetTrigger, setResetTrigger] = useState(false);
-  const [showHelp, setShowHelp] = useState(false); // 👉 nuevo estado
+  const [currentCombination, setCurrentCombination] = useState(() => getRandomCombination(allColors));
+  const [activeColors, setActiveColors] = useState([]); // colores adivinados
+  const [showHelp, setShowHelp] = useState(false);
+  const [gameFinished, setGameFinished] = useState(false);
 
   const handleChange = (e) => {
-    setInputValue(e.target.value);
-    setResetTrigger(false); // Si escribís algo, cancelamos el reset
+    const val = e.target.value.toLowerCase();
+    setInputValue(val);
+    setShowHelp(false);
+
+    if (val !== '' && currentCombination.includes(val) && !activeColors.includes(val)) {
+      setActiveColors(prev => [...prev, val]);
+    }
   };
+
+  useEffect(() => {
+    if (activeColors.length === currentCombination.length && currentCombination.length > 0) {
+      setGameFinished(true);
+    }
+  }, [activeColors, currentCombination]);
 
   const handleReset = () => {
     setInputValue('');
-    setResetTrigger(true); // Dispara el reinicio de cajas
+    setActiveColors([]);
+    setGameFinished(false);
   };
 
-   const handleHelp = () => {
-    setShowHelp(true); // 👉 mostrar colores
-    setTimeout(() => setShowHelp(false), 3000); // 👉 ocultarlos después de 3 segundos
+  const handleHelp = () => {
+    setShowHelp(true);
+    setTimeout(() => setShowHelp(false), 3000);
+  };
+
+  const handleContinue = () => {
+    const newCombination = getRandomCombination(allColors);
+    setCurrentCombination(newCombination);
+    setActiveColors([]);
+    setInputValue('');
+    setGameFinished(false);
   };
 
   return (
@@ -28,25 +60,33 @@ const MyFormChallenge = () => {
       <div className="input-group">
         <input
           type="text"
-          placeholder="Write a color"
+          placeholder="Think a color, write it and see if it has an assigned box"
           value={inputValue}
           onChange={handleChange}
+          disabled={gameFinished}
         />
-        <button className="reset-button" onClick={handleReset}>Reset</button>
-        <button className="reset-button" onClick={handleHelp}>Help</button>
+        <button className="reset-button" onClick={handleReset} disabled={gameFinished}>Reset</button>
+        <button className="reset-button" onClick={handleHelp} disabled={gameFinished}>Help</button>
       </div>
 
       <div className="grid">
-        {colors.map((color) => (
+        {currentCombination.map((color) => (
           <BoxColor
             key={color}
             color={color}
-            inputValue={inputValue}
-            reset={resetTrigger} // pasamos el trigger
+            active={activeColors.includes(color)}  // aquí usamos el prop active
             showHelp={showHelp}
+            reset={gameFinished ? true : false}   // opcional para resetear cuando termina juego
           />
         ))}
       </div>
+
+      {gameFinished && (
+        <div className="congrats-message">
+          <h2>Congratulations! You have guessed all the colors!</h2>
+          <button className="reset-button" onClick={handleContinue}>Continue</button>
+        </div>
+      )}
     </div>
   );
 };
