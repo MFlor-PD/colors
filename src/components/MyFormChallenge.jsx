@@ -27,6 +27,7 @@ const MyFormChallenge = () => {
 
     if (val !== '' && currentCombination.includes(val) && !activeColors.includes(val)) {
       setActiveColors(prev => [...prev, val]);
+      setInputValue('');
     }
   };
 
